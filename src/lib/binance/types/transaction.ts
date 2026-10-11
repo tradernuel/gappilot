@@ -23,18 +23,18 @@ export interface SimulateParams {
 }
 export interface SimulationBalanceChange {
   /** Empty / native marker for BNB. */
-  contractAddress?: string;
-  tokenType?: string;
+  contractAddress?: string | null;
+  tokenType?: string | null;
   /** Signed delta in smallest units. Negative = outflow. */
-  change?: string;
-  owner?: string;
+  change?: string | null;
+  owner?: string | null;
 }
 export interface SimulationAllowanceChange {
-  tokenAddress?: string;
-  owner?: string;
-  spender?: string;
-  preAmount?: RawAmount;
-  postAmount?: RawAmount;
+  tokenAddress?: string | null;
+  owner?: string | null;
+  spender?: string | null;
+  preAmount?: RawAmount | null;
+  postAmount?: RawAmount | null;
 }
 export interface SimulationResult {
   /** Spec only gives SUCCESS / FAILED as examples — treat as open string. */
@@ -47,18 +47,18 @@ export interface SimulationResult {
 // ── GET /api/v1/dex/pre-transaction/gas-price ────────────────────────────────
 export interface GasPrice {
   evmLegacyGasPrice?: {
-    lowGasPrice?: string;
-    mediumGasPrice?: string;
-    highGasPrice?: string;
+    lowGasPrice?: string | null;
+    mediumGasPrice?: string | null;
+    highGasPrice?: string | null;
   } | null;
   eip1559GasPrice?: {
-    baseFee?: string;
-    lowPriorityFee?: string;
-    lowMaxFee?: string;
-    mediumPriorityFee?: string;
-    mediumMaxFee?: string;
-    highPriorityFee?: string;
-    highMaxFee?: string;
+    baseFee?: string | null;
+    lowPriorityFee?: string | null;
+    lowMaxFee?: string | null;
+    mediumPriorityFee?: string | null;
+    mediumMaxFee?: string | null;
+    highPriorityFee?: string | null;
+    highMaxFee?: string | null;
   } | null;
   solanaGasPrice?: unknown | null;
 }
@@ -69,7 +69,7 @@ export interface GasLimitParams {
   evmTx: EvmTx;
 }
 export interface GasLimit {
-  gasLimit?: string;
+  gasLimit?: string | null;
 }
 
 // ── POST /api/v1/dex/pre-transaction/broadcast-transaction ───────────────────
@@ -79,11 +79,11 @@ export interface BroadcastParams {
   /** EVM: hex-encoded signed RLP tx. */
   signedTransaction: string;
   address: string;
-  enableMevProtection?: boolean;
+  enableMevProtection?: boolean | null;
 }
 export interface BroadcastResult {
-  orderId?: string;
-  txHash?: string;
+  orderId?: string | null;
+  txHash?: string | null;
 }
 
 // ── GET /api/v1/dex/post-transaction/transaction-detail-by-txhash ────────────
@@ -93,31 +93,31 @@ export interface TxDetailParams {
 }
 export interface TxDetail {
   /** NOTE: this endpoint uses `chainIndex`, not `binanceChainId`, in the response. */
-  chainIndex?: string;
-  height?: string;
-  txTime?: string;
-  txhash?: string;
+  chainIndex?: string | null;
+  height?: string | null;
+  txTime?: string | null;
+  txhash?: string | null;
   /** "success" | "fail" | "pending" */
-  txStatus?: string;
+  txStatus?: string | null;
   gasLimit?: string | null;
   gasUsed?: string | null;
   gasPrice?: string | null;
-  txFee?: string;
-  nonce?: string;
-  amount?: string;
-  symbol?: string;
+  txFee?: string | null;
+  nonce?: string | null;
+  amount?: string | null;
+  symbol?: string | null;
   methodId?: string | null;
   fromDetails?: unknown[];
   toDetails?: unknown[];
   internalTransactionDetails?: unknown[];
   tokenTransferDetails?: Array<{
-    from?: string;
-    to?: string;
+    from?: string | null;
+    to?: string | null;
     isFromContract?: boolean | null;
     isToContract?: boolean | null;
-    tokenContractAddress?: string;
-    symbol?: string;
-    amount?: string;
+    tokenContractAddress?: string | null;
+    symbol?: string | null;
+    amount?: string | null;
   }>;
 }
 /** Returned as an array in the spec. */

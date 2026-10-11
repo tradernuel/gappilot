@@ -25,53 +25,53 @@ export interface GetQuoteParams {
   /** Optional single-vendor fast path. */
   vendor?: QuoteVendor;
   /** REQUIRED for RFQ routes (Ondo / bStocks). Must match the wallet that later signs. */
-  userWalletAddress?: string;
+  userWalletAddress?: string | null;
   /** Referral fee — GapPilot does not charge fees; listed for completeness. */
-  feePercent?: string;
+  feePercent?: string | null;
   feeSource?: FeeSource;
 }
 
 export interface QuoteToken {
-  tokenContractAddress?: string;
-  tokenSymbol?: string;
+  tokenContractAddress?: string | null;
+  tokenSymbol?: string | null;
   /** USD unit price (decimal string). */
-  tokenUnitPrice?: NumericString;
-  decimal?: string;
-  isHoneyPot?: boolean;
+  tokenUnitPrice?: NumericString | null;
+  decimal?: string | null;
+  isHoneyPot?: boolean | null;
   /** 0–1; "0.01" = 1%. */
-  taxRate?: NumericString;
+  taxRate?: NumericString | null;
 }
 
 export interface DexRouteHop {
-  dexProtocol?: { dexName?: string; percent?: NumericString };
-  fromToken?: { tokenContractAddress?: string; tokenSymbol?: string };
-  fromTokenIndex?: string;
-  toToken?: { tokenContractAddress?: string; tokenSymbol?: string };
-  toTokenIndex?: string;
+  dexProtocol?: { dexName?: string | null; percent?: NumericString };
+  fromToken?: { tokenContractAddress?: string | null; tokenSymbol?: string };
+  fromTokenIndex?: string | null;
+  toToken?: { tokenContractAddress?: string | null; tokenSymbol?: string };
+  toTokenIndex?: string | null;
 }
 
 export interface QuoteRoute {
   /** UUID without dashes. TTL ≈ 30s; expired → QUOTE_EXPIRED (40401). */
-  quoteId?: string;
+  quoteId?: string | null;
   /** e.g. LiquidMesh, Lifi, 1inch, Pancake, Jupiter — or an RFQ vendor. */
-  vendorName?: string;
-  binanceChainId?: BinanceChainId;
-  fromTokenAmount?: RawAmount;
+  vendorName?: string | null;
+  binanceChainId?: BinanceChainId | null;
+  fromTokenAmount?: RawAmount | null;
   /** Estimated output, smallest units. */
-  toTokenAmount?: RawAmount;
+  toTokenAmount?: RawAmount | null;
   /** Estimated network fee in USD. */
   tradeFee?: NumericString | null;
   /** Estimated gas in wei. */
   estimateGasFee?: RawAmount | null;
   priceImpactPercent?: NumericString | null;
-  router?: string;
+  router?: string | null;
   fromToken?: QuoteToken;
   toToken?: QuoteToken;
   dexRouterList?: DexRouteHop[];
   executionMode?: ExecutionMode;
   /** Spender for ERC-20 approve. Null when no approval is needed. */
   approveTarget?: string | null;
-  isBest?: boolean;
+  isBest?: boolean | null;
   feeAmount?: RawAmount | null;
   feeToken?: string | null;
   actualSwapAmount?: RawAmount | null;
@@ -89,31 +89,31 @@ export interface BuildSwapParams {
   userWalletAddress: string;
   quoteId: string;
   /** Required unless autoSlippage=true. "0.5" = 0.5%. */
-  slippagePercent?: string;
-  autoSlippage?: boolean;
-  maxAutoSlippagePercent?: string;
+  slippagePercent?: string | null;
+  autoSlippage?: boolean | null;
+  maxAutoSlippagePercent?: string | null;
   /** When true, approve calldata is included in signatureData. */
-  approveTransaction?: boolean;
-  approveAmount?: RawAmount;
-  gasLimit?: string;
+  approveTransaction?: boolean | null;
+  approveAmount?: RawAmount | null;
+  gasLimit?: string | null;
   gasLevel?: GasLevel;
   /** 0–100, default 90; 100 disables. */
-  priceImpactProtectionPercent?: string;
+  priceImpactProtectionPercent?: string | null;
 }
 
 export interface SwapTx {
-  from?: string;
+  from?: string | null;
   /** DEX router contract. */
-  to?: string;
-  data?: string;
+  to?: string | null;
+  data?: string | null;
   /** wei; "0" for ERC-20 swaps. */
-  value?: RawAmount;
-  gas?: string;
-  gasPrice?: string;
-  maxPriorityFeePerGas?: string;
+  value?: RawAmount | null;
+  gas?: string | null;
+  gasPrice?: string | null;
+  maxPriorityFeePerGas?: string | null;
   /** Minimum output at the slippage limit (smallest units). */
-  minReceiveAmount?: RawAmount;
-  slippagePercent?: NumericString;
+  minReceiveAmount?: RawAmount | null;
+  slippagePercent?: NumericString | null;
   signatureData?: string[];
   computeUnitPrice?: string | null;
   computeUnitLimit?: string | null;
@@ -123,24 +123,24 @@ export interface RfqPayload {
   /** Pass as `vendor` to /order/submit. */
   vendor?: RfqVendor | (string & {});
   /** Currently always "EIP712". */
-  txType?: string;
+  txType?: string | null;
   /** EIP-712 typed data for eth_signTypedData_v4 — hex or JSON-encoded string (spec says either). */
-  typedDataToSign?: string;
-  signingScheme?: string;
+  typedDataToSign?: string | null;
+  signingScheme?: string | null;
   /** JSON strings with approveContract + approveTxCalldata, when approveTransaction=true. */
   signatureData?: string[];
 }
 
 export interface SwapRouterResult {
-  binanceChainId?: BinanceChainId;
-  vendorName?: string;
-  fromTokenAmount?: RawAmount;
-  toTokenAmount?: RawAmount;
+  binanceChainId?: BinanceChainId | null;
+  vendorName?: string | null;
+  fromTokenAmount?: RawAmount | null;
+  toTokenAmount?: RawAmount | null;
   tradeFee?: NumericString | null;
   estimateGasFee?: RawAmount | null;
-  router?: string;
+  router?: string | null;
   /** (received_value − sent_value) / sent_value */
-  priceImpactPercent?: NumericString;
+  priceImpactPercent?: NumericString | null;
   dexRouterList?: DexRouteHop[];
   fromToken?: QuoteToken;
   toToken?: QuoteToken;
@@ -164,15 +164,15 @@ export interface GetApproveTxParams {
   tokenContractAddress: string;
   approveAmount: RawAmount;
   /** REQUIRED for Ondo/bStocks: pass vendorName from /quote. */
-  vendor?: string;
+  vendor?: string | null;
 }
 export interface ApproveTx {
   /** approve() calldata. */
-  data?: string;
+  data?: string | null;
   /** The spender. */
-  dexContractAddress?: string;
-  gasLimit?: string;
-  gasPrice?: string;
+  dexContractAddress?: string | null;
+  gasLimit?: string | null;
+  gasPrice?: string | null;
 }
 /** Returned as an array in the spec. */
 export type ApproveTxResponse = ApproveTx[];
@@ -191,13 +191,13 @@ export interface SubmitRfqOrderParams {
    * /swap response before implementing execution.
    */
   quoteId: string;
-  signingScheme?: string;
+  signingScheme?: string | null;
 }
 export interface SubmitRfqOrderResponse {
-  orderId?: string;
+  orderId?: string | null;
   /** Typically PENDING_VENDOR. */
   status?: RfqOrderStatus;
-  createdAt?: UnixMs;
+  createdAt?: UnixMs | null;
 }
 
 // ── GET /api/v1/dex/aggregator/order/{orderId} ───────────────────────────────
@@ -218,14 +218,14 @@ export const RFQ_TERMINAL_STATUSES: ReadonlySet<string> = new Set([
 ]);
 
 export interface RfqOrder {
-  orderId?: string;
+  orderId?: string | null;
   status?: RfqOrderStatus;
   /** Present only when FILLED. */
   txHash?: string | null;
   fromAmount?: RawAmount | null;
   toAmount?: RawAmount | null;
   filledAt?: UnixMs | null;
-  createdAt?: UnixMs;
+  createdAt?: UnixMs | null;
 }
 
 // ── GET /api/v1/dex/aggregator/history  (swap tx status by hash) ─────────────
@@ -234,15 +234,15 @@ export interface GetSwapStatusParams {
   txHash: string;
 }
 export interface SwapTxStatus {
-  binanceChainId?: BinanceChainId;
-  txHash?: string;
-  height?: string;
+  binanceChainId?: BinanceChainId | null;
+  txHash?: string | null;
+  height?: string | null;
   /** Unix ms as a string. */
-  txTime?: string;
+  txTime?: string | null;
   /** "success" | "failed" */
-  status?: string;
-  fromAddress?: string;
-  toAddress?: string;
+  status?: string | null;
+  fromAddress?: string | null;
+  toAddress?: string | null;
   errorMsg?: string | null;
   gasLimit?: string | null;
   gasUsed?: string | null;
@@ -251,8 +251,8 @@ export interface SwapTxStatus {
   priorityFee?: string | null;
   txType?: string | null;
   dexRouter?: string | null;
-  fromTokenDetails?: Array<{ symbol?: string | null; amount?: RawAmount; tokenAddress?: string }> | null;
-  toTokenDetails?: Array<{ symbol?: string | null; amount?: RawAmount; tokenAddress?: string }> | null;
+  fromTokenDetails?: Array<{ symbol?: string | null; amount?: RawAmount | null; tokenAddress?: string }> | null;
+  toTokenDetails?: Array<{ symbol?: string | null; amount?: RawAmount | null; tokenAddress?: string }> | null;
 }
 /** Spec: transaction not found → data is null (not HTTP 404). */
 export type SwapTxStatusResponse = SwapTxStatus | null;

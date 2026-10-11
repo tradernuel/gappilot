@@ -10,27 +10,27 @@ export interface GetAllBalancesParams {
   address: string;
   /** Spec: only ONE chain id is currently supported. */
   chains: BinanceChainId;
-  excludeRiskToken?: boolean;
-  page?: number;
+  excludeRiskToken?: boolean | null;
+  page?: number | null;
   /** 1–100, default 20. */
-  pageSize?: number;
+  pageSize?: number | null;
 }
 export interface TokenBalance {
-  binanceChainId?: BinanceChainId;
+  binanceChainId?: BinanceChainId | null;
   /** Empty string for the native asset. */
-  tokenContractAddress?: string;
-  address?: string;
-  symbol?: string;
+  tokenContractAddress?: string | null;
+  address?: string | null;
+  symbol?: string | null;
   /** Human-readable (decimals applied). */
-  balance?: NumericString;
+  balance?: NumericString | null;
   /** Smallest units. May be empty string on some chains. */
-  rawBalance?: RawAmount;
-  tokenPrice?: NumericString;
-  isRiskToken?: boolean;
+  rawBalance?: RawAmount | null;
+  tokenPrice?: NumericString | null;
+  isRiskToken?: boolean | null;
 }
 export interface BalancePage {
-  page?: number;
-  pageSize?: number;
+  page?: number | null;
+  pageSize?: number | null;
   tokenAssets?: TokenBalance[];
 }
 /** Returned as an array (one entry per chain). */

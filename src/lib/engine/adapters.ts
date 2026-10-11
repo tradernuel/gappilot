@@ -16,7 +16,7 @@ const int = (v: string | null | undefined): number | null => {
   const n = num(v);
   return n !== null && Number.isInteger(n) && n >= 0 ? n : null;
 };
-const sameAddr = (a: string | undefined, b: string) => !!a && a.toLowerCase() === b.toLowerCase();
+const sameAddr = (a: string | null | undefined, b: string) => !!a && a.toLowerCase() === b.toLowerCase();
 
 /** Sums liquidityUsd across pools. null when no pool has a usable figure. */
 export function sumLiquidity(pools: LiquidityPool[] | null | undefined): LiquidityInput | null {

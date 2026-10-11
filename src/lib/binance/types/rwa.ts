@@ -36,7 +36,7 @@ export type RwaReasonCode =
 
 export interface RwaStatusInfo {
   /** Whether the underlying market is currently tradable. */
-  openState?: boolean;
+  openState?: boolean | null;
   marketStatus?: RwaMarketStatus | null;
   /** Returned when openState=false. ASSET_PAUSED covers corporate actions (see reasonMsg). */
   reasonCode?: RwaReasonCode | null;
@@ -51,52 +51,52 @@ export interface GetRwaPlatformsParams {
   platformId?: RwaPlatformId;
 }
 export interface RwaPlatform {
-  platformId?: string;
+  platformId?: string | null;
   /** Number of underlying assets. */
-  tickerCount?: number;
-  chainDistribution?: Array<{ binanceChainId?: BinanceChainId; tokenCount?: number }>;
+  tickerCount?: number | null;
+  chainDistribution?: Array<{ binanceChainId?: BinanceChainId | null; tokenCount?: number }>;
   website?: string | null;
   logoUrl?: string | null;
 }
 
 // ── GET /api/v1/dex/market/rwa/tokens ────────────────────────────────────────
 export interface GetRwaTokensParams {
-  binanceChainId?: BinanceChainId;
+  binanceChainId?: BinanceChainId | null;
   platformId?: RwaPlatformId;
   /**
    * Sector tab. 1=Serenity Call, 2=SpaceX, 3=Upcoming Earnings, 4=AI Chips, 5=Storage,
    * 6=Energy, 7=Precious Metals, 8=China ADR, 9=Magnificent 7, 10=Crypto, 11=ETF,
    * 12=Tech Leaders, 13=Buffett Portfolio.
    */
-  tabId?: number;
+  tabId?: number | null;
 }
 export interface RwaToken {
-  binanceChainId?: BinanceChainId;
-  tokenContractAddress?: string;
-  platformId?: string;
+  binanceChainId?: BinanceChainId | null;
+  tokenContractAddress?: string | null;
+  platformId?: string | null;
   assetType?: RwaAssetType | number;
-  tokenName?: string;
-  tokenSymbol?: string;
-  tokenLogoUrl?: string;
+  tokenName?: string | null;
+  tokenSymbol?: string | null;
+  tokenLogoUrl?: string | null;
   /** NOTE: string in this endpoint, number in /market/token/basic-info. */
-  decimals?: string;
-  underlyingTicker?: string;
-  underlyingName?: string;
+  decimals?: string | null;
+  underlyingTicker?: string | null;
+  underlyingName?: string | null;
   underlyingNameZh?: string | null;
   /** "1.003701" means 1 token ≈ 1.003701 underlying shares. */
-  tokenToShareRatio?: NumericString;
+  tokenToShareRatio?: NumericString | null;
   tags?: string[] | null;
   statusInfo?: RwaStatusInfo;
   /** On-chain token price (USD). */
-  tokenPrice?: NumericString;
+  tokenPrice?: NumericString | null;
   /**
    * Per-share price DERIVED FROM THE ON-CHAIN TOKEN PRICE.
    * Per the spec this is NOT an official quote from the traditional market.
    * Do not treat (tokenPrice vs referencePrice) as a TradFi gap.
    */
-  referencePrice?: NumericString;
-  volume24H?: NumericString;
-  marketCap?: NumericString;
+  referencePrice?: NumericString | null;
+  volume24H?: NumericString | null;
+  marketCap?: NumericString | null;
   peRatioTTM?: NumericString | null;
 }
 
@@ -107,14 +107,14 @@ export interface GetRwaPriceParams {
   tokenContractAddresses: string[];
 }
 export interface RwaPrice {
-  binanceChainId?: BinanceChainId;
-  tokenContractAddress?: string;
-  platformId?: string;
-  tokenPrice?: NumericString;
+  binanceChainId?: BinanceChainId | null;
+  tokenContractAddress?: string | null;
+  platformId?: string | null;
+  tokenPrice?: NumericString | null;
   /** Derived from tokenPrice — see RwaToken.referencePrice. */
-  referencePrice?: NumericString;
+  referencePrice?: NumericString | null;
   /** Token price last updated, Unix ms. Our only documented price-age signal. */
-  tokenPriceUpdatedAt?: UnixMs;
+  tokenPriceUpdatedAt?: UnixMs | null;
 }
 
 // ── GET /api/v1/dex/market/rwa/underlying-profile ────────────────────────────
@@ -123,17 +123,17 @@ export interface RwaTokenParams {
   tokenContractAddress: string;
 }
 export interface RwaProtection {
-  supported?: boolean;
+  supported?: boolean | null;
   url?: string | null;
 }
 export interface RwaUnderlyingProfile {
-  binanceChainId?: BinanceChainId;
-  tokenContractAddress?: string;
-  platformId?: string;
-  underlyingTicker?: string;
-  underlyingFullName?: string;
+  binanceChainId?: BinanceChainId | null;
+  tokenContractAddress?: string | null;
+  platformId?: string | null;
+  underlyingTicker?: string | null;
+  underlyingFullName?: string | null;
   assetType?: RwaAssetType | number;
-  tokenToShareRatio?: NumericString;
+  tokenToShareRatio?: NumericString | null;
   /** Known keys: dailyAttestationReport, monthlyAttestationReport, collateralReport. */
   protections?: Record<string, RwaProtection | undefined>;
   companyInfo?: {
@@ -150,15 +150,15 @@ export interface RwaUnderlyingProfile {
 // ── GET /api/v1/dex/market/rwa/underlying-market ─────────────────────────────
 export interface RwaUnderlyingMarketData {
   /** Derived from the on-chain token price — not an official quote. */
-  referencePrice?: NumericString;
-  high52W?: NumericString;
-  low52W?: NumericString;
-  volumeShares24H?: NumericString;
-  avgDailyVolume1Y?: NumericString;
-  totalShares?: NumericString;
-  marketCap?: NumericString;
+  referencePrice?: NumericString | null;
+  high52W?: NumericString | null;
+  low52W?: NumericString | null;
+  volumeShares24H?: NumericString | null;
+  avgDailyVolume1Y?: NumericString | null;
+  totalShares?: NumericString | null;
+  marketCap?: NumericString | null;
   /** "23.81" = 23.81% */
-  turnoverRate?: NumericString;
+  turnoverRate?: NumericString | null;
   amplitude?: NumericString | null;
   peRatioTTM?: NumericString | null;
   pbRatio?: NumericString | null;
@@ -166,9 +166,9 @@ export interface RwaUnderlyingMarketData {
   latestDividend?: NumericString | null;
 }
 export interface RwaUnderlyingMarket {
-  binanceChainId?: BinanceChainId;
-  tokenContractAddress?: string;
-  platformId?: string;
+  binanceChainId?: BinanceChainId | null;
+  tokenContractAddress?: string | null;
+  platformId?: string | null;
   assetType?: RwaAssetType | number;
   statusInfo?: RwaStatusInfo;
   marketData?: RwaUnderlyingMarketData;
@@ -181,13 +181,13 @@ export interface SearchRwaParams {
   platformId?: RwaPlatformId;
 }
 export interface RwaSearchResult {
-  ticker?: string;
-  companyName?: string;
+  ticker?: string | null;
+  companyName?: string | null;
   assets?: Array<{
-    platformId?: string;
-    binanceChainId?: BinanceChainId;
-    tokenContractAddress?: string;
-    tokenSymbol?: string;
+    platformId?: string | null;
+    binanceChainId?: BinanceChainId | null;
+    tokenContractAddress?: string | null;
+    tokenSymbol?: string | null;
     assetType?: RwaAssetType | number;
   }>;
 }

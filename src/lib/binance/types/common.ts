@@ -17,28 +17,28 @@
 /** Gateway envelope wrapped around every response. `code === 0` means success. */
 export interface BinanceEnvelope<T> {
   /** Business status code. 0 indicates success. A non-zero code is an error even on HTTP 200. */
-  code?: number;
-  msg?: string;
+  code?: number | null;
+  msg?: string | null;
   data?: T;
   /** Server response time, Unix ms. */
-  timestamp?: number;
-  success?: boolean;
+  timestamp?: number | null;
+  success?: boolean | null;
 }
 
 /** Parsed from X-OC-* response headers (see @binance-web3/common parseRateLimitHeaders). */
 export interface RateLimitInfo {
-  limit?: number;
-  remaining?: number;
-  usedWeight?: number;
+  limit?: number | null;
+  remaining?: number | null;
+  usedWeight?: number | null;
   /** Seconds, from the standard Retry-After header. */
-  retryAfter?: number;
+  retryAfter?: number | null;
 }
 
 export interface BinanceResult<T> {
   data: T;
   rateLimit: RateLimitInfo;
   /** Server timestamp from the envelope, if present. Used for clock-skew checks. */
-  serverTime?: number;
+  serverTime?: number | null;
 }
 
 /** Decimal or integer encoded as a string, exactly as returned by the API. */

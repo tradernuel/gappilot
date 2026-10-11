@@ -94,8 +94,8 @@ export interface PriceRelationship {
 }
 
 export function priceRelationship(
-  price: Pick<RwaPrice, "tokenPrice" | "referencePrice" | "tokenPriceUpdatedAt"> | undefined,
-  tokenToShareRatio: string | undefined,
+  price: Pick<RwaPrice, "tokenPrice" | "referencePrice" | "tokenPriceUpdatedAt"> | null | undefined,
+  tokenToShareRatio: string | null | undefined,
   now: number = Date.now(),
 ): PriceRelationship {
   const tokenPriceUsd = toPositiveNumber(price?.tokenPrice);
@@ -153,7 +153,7 @@ function toError(source: string, err: unknown): PartialError {
 
 function normaliseToken(t: RwaToken, fallbackIssuer: string): DiscoveredAsset | null {
   if (!t.tokenContractAddress) return null;
-  const decimals = t.decimals !== undefined ? Number.parseInt(t.decimals, 10) : NaN;
+  const decimals = t.decimals != null ? Number.parseInt(t.decimals, 10) : NaN;
   return {
     issuer: t.platformId ?? fallbackIssuer,
     address: t.tokenContractAddress,
@@ -199,7 +199,7 @@ export class RwaService {
       }
       for (const t of r.value.data ?? []) {
         // Defensive: keep only BSC even though we filtered server-side.
-        if (t.binanceChainId !== undefined && t.binanceChainId !== BSC) continue;
+        if (t.binanceChainId != null && t.binanceChainId !== BSC) continue;
         const a = normaliseToken(t, issuer);
         if (a) assets.push(a);
         else skipped++;

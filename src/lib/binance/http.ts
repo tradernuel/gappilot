@@ -137,7 +137,7 @@ export class BinanceHttpClient {
           latencyMs: Date.now() - started,
           rateLimit: result.rateLimit,
         });
-        if (result.serverTime !== undefined) {
+        if (result.serverTime != null) {
           const skewMs = Date.now() - result.serverTime;
           if (Math.abs(skewMs) > this.config.recvWindowMs / 2) {
             this.log.warn("binance.clock_skew", { endpoint, skewMs, recvWindowMs: this.config.recvWindowMs });

@@ -107,3 +107,22 @@ describe("RwaService total failure", () => {
     expect(err).toMatchObject({ kind: "http", httpStatus: 503 });
   });
 });
+
+describe("live-data nulls (Binance returns null where the spec says string)", () => {
+  it("discovery accepts null marketCap/volume/peRatio/chainId and keeps the token", async () => {
+    const { impl } = fakeFetch((url) =>
+      url.searchParams.get("platformId") === "bstock"
+        ? json(200, envelope([{ binanceChainId: null, tokenContractAddress: ADDR.a, platformId: "bstock", underlyingTicker: "XYZ", decimals: null, marketCap: null, volume24H: null, peRatioTTM: null, tokenPrice: "10", tokenToShareRatio: "1" }]))(url, {})
+        : json(200, envelope([{ binanceChainId: "56", tokenContractAddress: ADDR.b, platformId: "ondo", underlyingTicker: "XYZ", marketCap: null }]))(url, {}),
+    );
+    const res = await new RwaService(apiClient(impl)).discoverAssets();
+    expect(res.errors).toEqual([]);
+    expect(res.assets.map((a) => a.address)).toEqual([ADDR.a, ADDR.b]); // null chain id is not treated as "another chain"
+    expect(res.assets[0]!.decimals).toBeNull();
+    expect(res.crossIssuerTickers).toHaveLength(1);
+  });
+
+  it("price relationship tolerates a null ratio", () => {
+    expect(priceRelationship({ tokenPrice: "10", referencePrice: "10", tokenPriceUpdatedAt: null }, null).perSharePriceUsd).toBeNull();
+  });
+});

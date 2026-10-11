@@ -175,7 +175,7 @@ export class BinanceAgenticWalletProvider implements ExecutionProvider {
         if (order?.status === "FAILED") return fail("The order failed on Binance Agentic Wallet.", orderId);
         if (order?.status === "FINISHED") {
           const txHash = typeof order.txHash === "string" && TXHASH.test(order.txHash) ? order.txHash : null;
-          const actual = order.toTokenActualQty !== undefined ? decimalStringToRaw(String(order.toTokenActualQty), request.output.decimals) : null;
+          const actual = order.toTokenActualQty != null ? decimalStringToRaw(String(order.toTokenActualQty), request.output.decimals) : null;
           const below = actual !== null && actual < minimum;
           return {
             mode: "LIVE",

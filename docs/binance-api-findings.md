@@ -126,6 +126,7 @@ already-validated, already-simulated trade plan from GapPilot.
 | D13 | `/aggregator/quote` → `router` | Named like a contract address, but documented as "routing path description, addresses joined with `--`". The router contract is `tx.to` from `/swap`. |
 | D15 | Agentic Wallet CLI | `baw market-order swap` has no quote ID or minimum-output parameter, and the JSON quote strips `quoteId`; a swap can't be bound to a simulated transaction. Option lists and JSON shapes are only discoverable from `--help` and the bundled source. 6 releases in 2 months; UNLICENSED, no public repo. |
 | D16 | Agentic Wallet session | Session in the OS keychain (`keytar`) after QR sign-in, so the wallet is desktop-only and not usable from serverless backends. |
+| D17 | `rwa/tokens` (live) | **Found on the first live deploy:** `marketCap` is `null` for some tokens although the spec types it as a string. GapPilot's strict response check stopped the scan. Response schemas now accept `null` for optional scalar fields (types widened to `T \| null`, 7 code paths fixed); wrong types (e.g. a number for a price) are still rejected. |
 | D14 | Gas units | Documented consistently in wei (gas-price, approve `gasPrice`, swap `gasPrice`); no USD gas except quote `tradeFee`. GapPilot converts approval gas to USD with `tradeFee ÷ estimateGasFee` from the same quote. |
 
 ## Third-party claims to verify with live calls

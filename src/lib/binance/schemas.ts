@@ -16,9 +16,10 @@ import { z } from "zod";
 
 const str = z.string();
 const num = z.number();
-const optStr = str.optional();
+/** Live API returns null for some fields the spec types as strings (e.g. rwa/tokens marketCap). Accept null. */
+const optStr = str.nullish();
 const nulStr = str.nullish();
-const optNum = num.optional();
+const optNum = num.nullish();
 const nulNum = num.nullish();
 
 const statusInfo = z.looseObject({
