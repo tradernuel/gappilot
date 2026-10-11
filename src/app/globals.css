@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/*
+ * GapPilot terminal palette. Each status colour carries exactly one meaning.
+ * Premium/discount use copper/sky (not red/green): a spread's sign is not good or bad.
+ */
+@theme {
+  --color-ink: #101820;
+  --color-panel: #16212c;
+  --color-raised: #1c2936;
+  --color-rule: #243241;
+  --color-rule-strong: #34465a;
+  --color-text: #dce3ea;
+  --color-dim: #8796a6;
+  --color-faint: #5e6b7a;
+
+  --color-brand: #f0a73a;
+  --color-exec: #3fd1a9;
+  --color-act: #f0a73a;
+  --color-watch: #8e9fcf;
+  --color-ignore: #5e6b7a;
+  --color-premium: #e59a73;
+  --color-discount: #6ec3e0;
+  --color-danger: #ef7a7a;
+
+  --font-sans: "IBM Plex Sans Variable", "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: var(--color-ink);
+  color: var(--color-text);
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Figures align in columns. */
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "zero" 1;
+  letter-spacing: -0.01em;
+}
+
+/* Desktop is an app shell: the table and detail panel scroll, the document never does. */
+@media (min-width: 1024px) {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+@keyframes gp-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.9; }
+}
+.skeleton {
+  background: var(--color-raised);
+  border-radius: 2px;
+  animation: gp-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes gp-slide-in {
+  from { transform: translateX(16px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+.panel-enter {
+  animation: gp-slide-in 160ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton, .panel-enter { animation: none; }
+}

@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+.env
+.env.local
+.env.*.local
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+fixtures/live/
+audit/
+agent-bundle.json
+gappilot-export.json
+dist-demo/
